@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Files ###
+application-local-dev.yaml
