@@ -14,11 +14,11 @@ public class JwtUtils {
         return Jwts.parserBuilder()
                 .setSigningKey(secretKey)
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
-    public Boolean isTokenExpired(String token) {
+    public Boolean isExpired(String token) {
         try {
             return getClaims(token).getExpiration().before(new Date());
         } catch (Exception e) {

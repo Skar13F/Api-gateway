@@ -2,6 +2,7 @@ package com.example.api_gateway.service;
 
 import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
@@ -31,13 +32,14 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
 
                 String authHeader = exchange.getRequest().getHeaders().getFirst("Authorization");
+                //String authHeader = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION).get(0);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 } else {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
 
-                if (jwtUtils.isTokenExpired(authHeader)){
+                if (jwtUtils.isExpired(authHeader)){
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
 
